@@ -38,7 +38,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
                 // As of API level 31, the coarse permission MUST accompany
                 // the fine permission.
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
         },
         // A random integer which is hopefully unique to this plugin.
         permissionRequestCode = 28351
@@ -77,10 +78,12 @@ public class BackgroundGeolocation extends Plugin {
                 callPendingPermissions = call;
                 pluginRequestAllPermissions();
             } else {
-                call.reject("Permission denied.", "NOT_AUTHORIZED");
+                //call.reject("Permission denied.", "NOT_AUTHORIZED");
+                call.reject("Permission denied.", "PERMISSION_DENIED");
             }
         } else if (!isLocationEnabled(getContext())) {
-            call.reject("Location services disabled.", "NOT_AUTHORIZED");
+            //call.reject("Location services disabled.", "NOT_AUTHORIZED");
+            call.reject("Location services disabled.", "LOCATION_SERVICES_DISABLED");
         }
         if (call.getBoolean("stale", false)) {
             fetchLastLocation(call);
